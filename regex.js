@@ -388,3 +388,18 @@ result = s.replace(pattern, '$1') // replace the entire match with the first (te
 console.log(s.match(pattern))
 console.log(result)
 
+// regex alternation - allows you to match different patterns within a single regex
+//// similar to the logical OR operator
+///// use the pipe | symbol to denote alternation, in which you can match either A or B
+// A | B // This means you can match either pattern A or pattern B
+
+// ex. matching time string in the hh:mm format
+//// /\d{2}:\d{2}/ would match all the times, but also includ stuff like 99:99 which is not a real time
+let timeString = '07:23 33:71 21:17 25:81'
+pattern = /([01]\d|2[0-3]):[0-5]\d/g // [01]\d matches numbers from 00 to 19, and 2[0-3] matches numbers from 20-23, the only numbers allowed for hours
+// the alternator | allows you to match multiple patterns
+// [05]\d matches valid minutes
+// : matches the colon
+matches = timeString.match(pattern)
+console.log(matches) // output is '07:23', and '21:17' the only valid times within the string
+
