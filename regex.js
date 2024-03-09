@@ -318,3 +318,45 @@ console.log(results) // matches the carrot only because of \^, without \ it will
 // \w+ matches one or more word characters
 // \/ matches the forward slash (/)
 // \d+ matches one or more digits
+
+path = 'posts/123'
+pattern = /\w+\/(\d+)/
+match = path.match(pattern)
+console.log(match) // output contains the entire string, and the digits '123' becuase of (\d+)
+
+// using multiple capturing groups - to capture both the resource (like 'posts') and the id (like '123') from the path 'posts/123'
+// you can use /(\w+)\/(\d+)/
+
+path = 'posts/123'
+pattern = /(\w+)\/(\d+)/
+match = path.match(pattern)
+console.log(match) // output contains both posts due to (\w+) and 123 due to (\d+), the / is included in the full string, but not its own array element
+
+// named capturing groups - assign names to capturing groups, makes it easier to reference them later in code
+//// (?<name>rule)
+////// () indicates capturing group
+////// ?<name> specifies the name of the capturing group
+////// rule is a rule in the pattern, liek {2} indicating string is 2 characters long
+
+path = 'posts/123'
+pattern = /(?<resource>\w+)\/(?<id>\d+)/ // resource and id are names because they are preceded by the question mark
+match = path.match(pattern)
+console.log(match.groups) // output has groups array with an object that contains resource: 'posts' and id: '123'
+console.log(match.groups.resource) // able to get data without using array indexing
+console.log(match.groups.id)
+// resource and id are the names assigned to the capturing groups
+//// can access them using match.groups
+
+// another example
+//// path = 'posts/2022/02/18' and we want to capture the resource (posts), year (2022), month (02), day (18)
+path = 'posts/2024/02/22'
+pattern = /(?<resource>\w+)\/(?<year>\d{4})\/(?<month>\d{2})\/(?<day>\d{2})/ // capture groups are resource, year, month, and day
+// rule is that the year, month and day are 4, 2, and 2 digits long respectively
+match = path.match(pattern)
+console.log(match.groups.resource)
+console.log(match.groups.year)
+console.log(match.groups.month)
+console.log(match.groups.day)
+// captures all the ids that we defined above in the groups object
+
+// non-capturing groups
