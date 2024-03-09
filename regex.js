@@ -359,4 +359,32 @@ console.log(match.groups.month)
 console.log(match.groups.day)
 // captures all the ids that we defined above in the groups object
 
-// non-capturing groups
+// non-capturing groups - used to group parts of a pattern together for applying quantifiers or alternation, without capturing the matched substring
+//// create non-capturing group by adding ?: at the beginning of the parentheses
+////// /(?:\d)+/ tells regex engine not to cpature the matched substring
+
+//capturing groups
+let regexWithCapture = /(\d{2})\/(\d{2})\/(\d{4})/
+// let regexWithCapture = /(?<month>\d{2})\/(?<day>\d{2})\/(?<year>\d{4})/ // splits string up and saves them to groups object
+let matchWithCapture = regexWithCapture.exec('02/26/2024')
+console.log(matchWithCapture) //output has captured month, day, and year as separate elements in the array
+
+//non-capturing groups
+let regexWithoutCapture = /(?:\d{2})\/(?:\d{2})\/(?:\d{4})/
+let matchWithoutCapture = regexWithoutCapture.exec('02/26/2024')
+console.log(matchWithoutCapture) // matches whole date string, does not split string up
+
+// non-capturing groups(?:pattern) behave like regular capturing groups () in terms of matching patterns but they don't store the matched text
+// in memory for later retrieval.
+//// make them useful when you odn't need to extract specific parts of the matched text
+
+// Backreferences - refer to previously captured groups within a regular expression.
+/// syntax is \N in which N is an integer representing the capturing group number
+
+// ex. remove the second lion in the string
+let s = 'Lion Lion is the King'
+pattern = /(\w+)\s+\1/ // (\w+)\s matches the word and creates capturing group using (), \1 is a backreference to refer to the 1st capturing group
+result = s.replace(pattern, '$1') // replace the entire match with the first (technically second since 0 is first) capturing group using String.replace
+console.log(s.match(pattern))
+console.log(result)
+
