@@ -318,6 +318,7 @@ console.log(results) // matches the carrot only because of \^, without \ it will
 // \w+ matches one or more word characters
 // \/ matches the forward slash (/)
 // \d+ matches one or more digits
+// \s matches whitespace
 
 path = 'posts/123'
 pattern = /\w+\/(\d+)/
@@ -403,3 +404,46 @@ pattern = /([01]\d|2[0-3]):[0-5]\d/g // [01]\d matches numbers from 00 to 19, an
 matches = timeString.match(pattern)
 console.log(matches) // output is '07:23', and '21:17' the only valid times within the string
 
+//Lookahead and lookbehind in regex
+// lookahead = matches a pattern (x) only if it's followed by another specific pattern (y)
+// syntax is x(?=y), in which x is the pattern you want to match, (?=y) is the lookahead asserttion by indicating that x should be followed by y
+
+//ex. identify numbers followed by units miles but not km
+let dist = 'He ran 5 miles, but not 10 kilometers'
+regex = /\d+(?=\s*miles)/g
+console.log(dist.match(regex)) // output only contains 5 becuase it is proceeded by miles and not kilometers
+
+// multiple lookaheads - use x(?=y)(?=z) to impose multiple conditions for matching
+
+// match strings that contain both 'foo' and 'bar'
+regex = /(?=.*foo)(?=.*bar)/
+console.log(regex.test('foobar')) //output is true, matches foo and bar in any order
+console.log(regex.test('barfoo')) //output is true, matches foo and bar in any order
+console.log(regex.test('foo')) //output is false, missing bar
+console.log(regex.test('bar')) //output is false, missing foo
+
+// negative lookaheads - (?!y), regex engine matches x only if it is not followed by y
+text = 'He ran 5 miles, but not 10 kilometers'
+regex = /\d+(?!\s*miles)/g // matches any digit followed by anything but miles, because (?!\s*miles) is the negative lookahead
+console.log(text.match(regex)) //output is 10 because it is followed by kilometers
+
+// lookbehind - provides a way to match patterns based on what precedes them, essentially matching an element if there is another specific element before it
+// ex. match numbers preceded by $ but not €
+let priceString = "The price is $100, but €200."
+regex = /(?<=\$)\d+/g
+console.log(priceString.match(regex)) // only matches the 100 because the $ preceeds it (before it) and (?<=\$) matches it
+// \ is used to escape the special character '$', treating it as a literal character
+
+// negative lookbehind - match a pattern only if it is not preceded by a specific pattern, 
+// useful in excluding certain patterns from matches based on what precedes them
+
+// ex. string with prices in different currencies, only match the numbers not preceded by the $ symbol
+priceString = 'The price is $50, but not €100'
+regex = /(?<!\$)\b\d+\b/g // (?<!\$) is the negative lookbehind syntax, matches the pattern only if it is not preceded by the literal string '$'
+console.log(priceString.match(regex)) //output is 100 because it is not preceded by $ taht is matched with (?<!\$)
+
+/**Practical Examples and Use Cases of Regex */
+// password strength checking
+function checkPasswordStrength(password) {
+    let pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?==.*[!@#$%^&*]).{8,}$/
+}
