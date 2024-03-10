@@ -118,6 +118,8 @@ console.log(result2) // with u flag, result is the actual emoji
 
 // anchors in regex - special characters in regex taht do not represent actual characters but instead indicate positions within a string
 //// two main anchors: ^ and $
+//// ^ marks beginning of string, checks if string starts with a specific character or pattern
+//// $ marks end of string, checks if string ends with a specific character or pattern
 
 // ^ matches the beginning of the text, checks if a string starts with a specific character or pattern
 str = 'Mountain'
@@ -445,5 +447,49 @@ console.log(priceString.match(regex)) //output is 100 because it is not preceded
 /**Practical Examples and Use Cases of Regex */
 // password strength checking
 function checkPasswordStrength(password) {
-    let pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?==.*[!@#$%^&*]).{8,}$/
+    let pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/
+    return pattern.test(password)
 }
+// regex ensures that password contains at least 1 digit, 1 lowercase letter, 1 uppercase letter, 1 special character, and is at least 8 characters long
+console.log(checkPasswordStrength('Pass0rd!'))
+console.log(checkPasswordStrength('weakpassword'))
+
+// here's what the pattern does:
+//// (?=.*\d) - requires at least one digit
+//// (?=.*[a-z]) - requires at least one lowercase letter
+//// (?=.*[A-Z]) - requires at least one uppercase letter
+//// (?=.*[!@#$%^&*]) - requires at least one special character
+//// .{8,} - requires at minimum length of 8 characters
+
+// Email Validation function
+function validateEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/ // matches email-name, the @ symbol, followed by website, the '.', followed by com
+    return emailRegex.test(email)
+}
+console.log(validateEmail('example@email.com')) //true
+console.log(validateEmail('invalid-email')) //false
+
+// here's what the pattern does
+//// ^ asserts teh start of the string
+//// [^\s@]+ matches one or more characters that are not whitespace or '@'
+//// @ matches the @ symbol
+//// [^\s@]+ matches one or more characters that are not whitespace or '@'
+//// \. matches the '.' symbol (escaped because '.' has a special meaning in regex)
+//// [^\s@]+ matches one or more characters that are not whitespace or @
+//// $ asserts the end of the string
+
+// Phone number formatting function
+// can find and format phone numbers using replace() method
+function formatPhoneNumber(phoneNumber) {
+    const phoneRegex = /(\d{3})(\d{3})(\d{4})/ // first part looks for 3 digits, followed by second match that has 3 digits, followed by 3rd match with 4 digits
+    return phoneNumber.replace(phoneRegex, '($1) $2-$3') // replaces the string with the first match in parentheses
+    // followed by the 2nd and 3rd match connected with a hyphen
+}
+
+const formattedNumber = formatPhoneNumber('9876543210')
+console.log(formattedNumber) // (987) 654-3210
+
+// the replace() method $1, $2, and $3 represent the cpatured groups in the regex pattern, corresponding to the three sets of digits in the phone number
+
+
+
